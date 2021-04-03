@@ -1,0 +1,21 @@
+{
+  "name": "herres-book",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "core-js": "^3.9.1",
+    "nuxt": "^2.15.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.8.6",
+    "node-fetch": "^2.6.1",
+    "postcss-import": "^12.0.1",
+    "precss": "^4.0.0"
+  }
+}
