@@ -1,7 +1,7 @@
 <template>
   <main>
     <section v-for="playlist in playlists" :key="playlist.id">
-      <article :style="`height: calc(100vh - 80px);`">
+      <article :style="`height: calc(2000px);`">
         <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe>
       </article>
       <hr/>
