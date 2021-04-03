@@ -52,6 +52,7 @@ article {
   margin: 4rem 0;
 
   h1 {
+    font-size: 64px;
     margin: 4rem;
   }
 }
