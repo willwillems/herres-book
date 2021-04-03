@@ -5,8 +5,8 @@
       <h3>{{ description }}</h3>
     </header>
     <article v-for="item in playlistItems" :key="item.id">
-        <!-- <h2 >{{ item.snippet.title }}</h2> -->
-        <iframe :src="`https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <h1 >{{ item.snippet.title }}</h1>
+      <iframe :src="`https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </article>
   </main>
 </template>
@@ -45,11 +45,15 @@ main {
 
 main header {
   border-bottom: solid 12px white;
-  padding: 16rem 4rem;
+  padding: 6rem 4rem;
 }
 
 article {
   margin: 4rem 0;
+
+  h1 {
+    margin: 4rem;
+  }
 }
 
 iframe {

@@ -42,7 +42,7 @@ export default {
     }
 
     document.addEventListener('click', (e) => {
-      return (scale = 6, render())
+      return (scale = 2, render())
     });
 
     document.addEventListener('wheel', (e) => {
@@ -82,8 +82,8 @@ body main {
 }
 
 @media only screen and (max-width: 480px) {
-  main {
-    grid-template-columns: repeat(2, 1fr);
+  body main {
+    width: calc(100% * (10/2));
   }
 }
 
