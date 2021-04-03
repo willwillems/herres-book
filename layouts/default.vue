@@ -30,7 +30,7 @@ html {
 
 h1 {
   font-size: 2em;
-  margin: .25em 0;
+  margin: 0 0 .25em 0;
 }
 
 h3 {

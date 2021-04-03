@@ -1,68 +1,72 @@
 <template>
   <main>
-    <section v-for="playlist in playlists" :key="playlist.id">
-      <article :style="`height: calc(2000px);`">
-        <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe>
-      </article>
+    <div v-for="(playlist, i) in playlists" :key="playlist.id" class="section-container">
+      <section class="section">
+        <a :href="`/pl/${playlist.id}`" class="playlist-link">
+          <img src="@/assets/open_full.svg" alt="open">
+        </a>
+        <AppPlaylistCard class="playlist" :playlist="playlist" :playlistItems="playlistItems[i].items" />
+        <!-- <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe> -->
+      </section>
       <hr/>
-    </section>
+    </div>
+    </div>
   </main>
 </template>
 
 <script>
+import { getPlaylists, getAllPlayListItems, channelID } from '@/lib/ytapi'
+
+import AppPlaylistCard from '@/components/AppPlaylistCard.vue'
+
+/**
+ *  Sorts all arrays together with the first. Pass either a list of arrays, or a map. Any key is accepted.
+ *     Array|Object arrays               [sortableArray, ...otherArrays]; {sortableArray: [], secondaryArray: [], ...}
+ *     Function comparator(?,?) -> int   optional compareFunction, compatible with Array.sort(compareFunction)
+ */
+function sortArrays(arrays, comparator = (a, b) => (a < b) ? -1 : (a > b) ? 1 : 0) {
+    let arrayKeys = Object.keys(arrays);
+    let sortableArray = Object.values(arrays)[0];
+    let indexes = Object.keys(sortableArray);
+    let sortedIndexes = indexes.sort((a, b) => comparator(sortableArray[a], sortableArray[b]));
+
+    let sortByIndexes = (array, sortedIndexes) => sortedIndexes.map(sortedIndex => array[sortedIndex]);
+
+    if (Array.isArray(arrays)) {
+        return arrayKeys.map(arrayIndex => sortByIndexes(arrays[arrayIndex], sortedIndexes));
+    } else {
+        let sortedArrays = {};
+        arrayKeys.forEach((arrayKey) => {
+            sortedArrays[arrayKey] = sortByIndexes(arrays[arrayKey], sortedIndexes);
+        });
+        return sortedArrays;
+    }
+}
+
 export default {
   data () {
     return {
       playlists: {}
     }
   },
-  async asyncData({ params, payload }) {
-    const playlists = payload.playlists // (await getPlaylists(channelID)).items
+  components: {
+    AppPlaylistCard
+  },
+  async asyncData({ params, payload, isDev, $config }) {
+    const playlists     = isDev ? (await getPlaylists($config.apiKey)(channelID)).items                   : payload.playlists
+    const playlistItems = isDev ? (await getAllPlayListItems($config.apiKey)(playlists.map(pl => pl.id))) : payload.allPlaylistItems
 
-    return { playlists }
+    const [sortedplaylistItems, sortedplaylists] = sortArrays([playlistItems, playlists], (a, b) => {
+      // ASC  -> a.length - b.length
+      // DESC -> b.length - a.length
+      return b.items.length - a.items.length
+    })
+
+    return { playlists: sortedplaylists, playlistItems: sortedplaylistItems }
   },
   mounted() {
-    const articles = document.querySelectorAll('article')
 
-    const main = document.querySelector('main')
-
-    const getRandom = () => (Math.floor(Math.random() * 4) + 2)
-
-    const getRandomHeight = () => `height: ${getRandom() * 120}px`
-
-    // set test elements to random height
-    // articles.forEach(article => article.style = getRandomHeight())
-
-    let zoom = 1
-    let bucket = 0
-    let scale = 1
-    let scaleSteps = [1, 2, 3, 4, 5, 6]
-    const render = () => {
-      main.style = `transform: scale(${scale});`
-    }
-
-    document.addEventListener('click', (e) => {
-      return (scale = 2, render())
-    });
-
-    document.addEventListener('wheel', (e) => {
-
-      if (e.ctrlKey) {
-        if (e.deltaY > 0) return (scale = 1, render())
-        // zoom = Math.max(zoom - e.deltaY * 0.1, 0)
-        // bucket = Math.min(Math.round(zoom), scaleSteps.length - 1)
-        // scale = scaleSteps[bucket]
-
-
-      } else {
-        // posX -= e.deltaX * 2;
-        // posY -= e.deltaY * 2;
-      }
-
-      ;
-    });
-
-  }
+  },
 }
 </script>
 
@@ -75,24 +79,40 @@ body main {
   display: grid;
 /*   gap: 40px; */
   grid-template-columns: repeat(10, 1fr);
-  width: calc(100% * (10/6));
+  width: calc(100% * (10/5));
   
   transform-origin: top left;
   transition: transform ease-in-out .5s;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 560px) {
   body main {
     width: calc(100% * (10/2));
   }
 }
 
-section {
+.section-container {
   display: grid;
   grid-auto-flow: row;
   align-content: start;
   
-  scroll-snap-align: start
+  scroll-snap-align: start;
+}
+
+.section {
+  margin: 20px;
+  position: relative;
+/*   X-axis scroll snap */
+  border: solid 2px white;
+  min-height: 100px;
+  overflow: hidden;
+
+  iframe, .playlist {
+    width: calc(100% * var(--columns));
+    height: calc(100% * var(--columns));
+    transform: scale(calc(1 / var(--columns)));
+    transform-origin: top left;
+  }
 }
 
 hr {
@@ -104,20 +124,11 @@ hr {
 /*   scroll-snap-align: start; */
 }
 
-article {
-  margin: 20px;
-/*   X-axis scroll snap */
-  border: solid 2px white;
-  min-height: 100px;
-  overflow: hidden;
-
-  iframe {
-    width: calc(100% * var(--columns));
-    height: calc(100% * var(--columns));
-    transform: scale(calc(1 / var(--columns)));
-    transform-origin: top left;
-  }
+.playlist-link {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  z-index: 10;
 }
-
 
 </style>

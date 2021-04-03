@@ -1,4 +1,4 @@
-import { getPlaylists, getPlaylistItems } from './lib/ytapi'
+import { getPlaylists, getPlaylistItems, getAllPlayListItems } from './lib/ytapi'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -6,38 +6,28 @@ export default {
 
   generate: {
     async routes() {
-      const playlists = (await getPlaylists('UCIfE0xC0WPJmxOaRl70Zheg')).items
+      const playlists = (await getPlaylists(process.env.API_KEY)('UCIfE0xC0WPJmxOaRl70Zheg')).items
 
-      const playlistItems = await Promise.all(playlists.map(pl => getPlaylistItems(pl.id)))
-
-      console.log([
-        {
-          route: '/',
-          payload: { playlists },
-        },
-        ...playlists.map((playlist, i) => ({
-          route: `/pl/${playlist.id}`,
-          payload: {
-            playlist,
-            playlistItems: playlistItems[i]
-          },
-        }))
-      ])
+      const allPlaylistItems = await getAllPlayListItems(process.env.API_KEY)(playlists.map(pl => pl.id))
 
       return [
         {
           route: '/',
-          payload: { playlists },
+          payload: { playlists, allPlaylistItems },
         },
         ...playlists.map((playlist, i) => ({
           route: `/pl/${playlist.id}`,
           payload: {
             playlist,
-            playlistItems: playlistItems[i].items
+            playlistItems: allPlaylistItems[i].items
           },
         }))
       ]
     }
+  },
+
+  privateRuntimeConfig: {
+    apiKey: process.env.API_KEY
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
