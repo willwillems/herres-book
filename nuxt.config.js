@@ -41,7 +41,11 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'msapplication-TileColor', content: '#000000' },
-      { name: 'theme-color', content: '#000000' }
+      { name: 'theme-color', content: '#000000' },
+      { property: 'og:title', content: 'HERRES LOOKBOOK' },
+      { property: 'og:description', content: '' },
+      { property: 'og:image', content: 'https://i.imgur.com/MfgsvIw.png' },
+      { property: 'og:url', content: 'https://lookbook.herres.haus' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
