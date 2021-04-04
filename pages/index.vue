@@ -1,16 +1,12 @@
 <template>
   <main>
-    <div v-for="(playlist, i) in playlists" :key="playlist.id" class="section-container">
-      <section class="section">
-        <a :href="`/pl/${playlist.id}`" class="playlist-link">
-          <img src="@/assets/open_full.svg" alt="open">
-        </a>
-        <AppPlaylistCard class="playlist" :playlist="playlist" :playlistItems="playlistItems[i].items" />
-        <!-- <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe> -->
-      </section>
-      <hr/>
-    </div>
-    </div>
+    <section v-for="(playlist, i) in playlists" :key="playlist.id" class="section">
+      <a :href="`/pl/${playlist.id}`" class="playlist-link">
+        <img src="@/assets/open_full.svg" alt="open">
+      </a>
+      <AppPlaylistCard class="playlist" :playlist="playlist" :playlistItems="playlistItems[i].items" />
+      <!-- <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe> -->
+    </section>
   </main>
 </template>
 
@@ -71,57 +67,44 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-body {
-  padding: 30px 20px;
-}
-
 body main {
+  padding: 30px 15px;
+
   display: grid;
-/*   gap: 40px; */
+  gap: 30px;
   grid-template-columns: repeat(10, 1fr);
-  width: calc(100% * (10/5));
+  width: calc(100% * (10 / var(--columns)));
   
   transform-origin: top left;
   transition: transform ease-in-out .5s;
 }
 
-@media only screen and (max-width: 560px) {
-  body main {
-    width: calc(100% * (10/2));
-  }
-}
-
-.section-container {
-  display: grid;
-  grid-auto-flow: row;
-  align-content: start;
-  
-  scroll-snap-align: start;
-}
-
 .section {
-  margin: 20px;
+  /* display: grid;
+  grid-auto-flow: row;
+  align-content: start; */
+
   position: relative;
 /*   X-axis scroll snap */
   border: solid 2px white;
-  min-height: 100px;
+  
+  scroll-snap-align: center;
+
   overflow: hidden;
 
+  height: calc(100% / var(--column-scale)); /*  hack, doesn't do what you think */
+
   iframe, .playlist {
-    width: calc(100% * var(--columns));
-    height: calc(100% * var(--columns));
-    transform: scale(calc(1 / var(--columns)));
+    width: calc(100% * var(--column-scale));
+    height: calc(100% * var(--column-scale));
+    transform: scale(calc(1 / var(--column-scale)));
     transform-origin: top left;
   }
-}
 
-hr {
-  width: 100%;
-  height: 0px;
-  margin: 0;
-  border: none;
-  
-/*   scroll-snap-align: start; */
+  &:first-child {
+    /* box-shadow: #ff4c08 10px 10px 0 0; */
+    box-shadow: #ff910852 0px 0px 31px 12px, #ff850899 0px 0px 8px 2px;
+  }
 }
 
 .playlist-link {

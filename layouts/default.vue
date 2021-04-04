@@ -25,7 +25,20 @@ html {
 }
 
 :root {
-  --columns: 6;
+  --columns: 5;
+  --column-scale: 6;
+}
+
+@media only screen and (max-width: 920px) and (min-width: 560px) {
+  :root {
+    --columns: 3
+  }
+}
+
+@media only screen and (max-width: 560px) {
+  :root {
+    --columns: 2
+  }
 }
 
 h1 {
@@ -42,7 +55,8 @@ html {
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   
-  scroll-snap-type: x;
+  scroll-snap-type: x mandatory;
+  overflow-x: scroll;
 }
 
 *,

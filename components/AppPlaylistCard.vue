@@ -77,6 +77,13 @@ export default {
   &__player {
     width: 100%;
     height: min(80vh, 680px);
+    
+    /* Gives a nice consisstent look but performance suffers */
+    /* filter: sepia(1) hue-rotate(-19deg) contrast(1.3);
+
+    &:hover {
+      filter: none;
+    } */
   }
 }
 </style>
