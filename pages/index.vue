@@ -1,13 +1,15 @@
 <template>
-  <main>
-    <section v-for="(playlist, i) in playlists" :key="playlist.id" class="section">
-      <a :href="`/pl/${playlist.id}`" class="playlist-link">
-        <img src="@/assets/open_full.svg" alt="open">
-      </a>
-      <AppPlaylistCard class="playlist" :playlist="playlist" :playlistItems="playlistItems[i].items" />
-      <!-- <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe> -->
-    </section>
-  </main>
+  <div id="scroll-snapper">
+    <main>
+      <section v-for="(playlist, i) in playlists" :key="playlist.id" class="section">
+        <a :href="`/pl/${playlist.id}`" class="playlist-link">
+          <img src="@/assets/open_full.svg" alt="open">
+        </a>
+        <AppPlaylistCard class="playlist" :playlist="playlist" :playlistItems="playlistItems[i].items" />
+        <!-- <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe> -->
+      </section>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -67,6 +69,12 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
+#scroll-snapper {
+  width: 100%;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+
 body main {
   padding: 30px 15px;
 
