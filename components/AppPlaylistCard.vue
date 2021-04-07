@@ -7,13 +7,17 @@
     <main class="playlist-card__content">
       <article class="video" v-for="item in playlistItems" :key="item.id">
         <h1 class="video__title">{{ item.snippet.title }}</h1>
-        <iframe class="video__player" :src="`https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <AppPseudoVideo :video="item" />
+        <!-- <img :src="item.snippet.thumbnails.high && item.snippet.thumbnails.high.url" alt="" class="video__player"> -->
+        <!-- <iframe class="video__player" :src="`https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
       </article>
     </main>
   </div>
 </template>
 
 <script>
+import AppPseudoVideo from '@/components/AppPseudoVideo.vue'
+
 export default {
   props: {
     playlist: {
@@ -24,6 +28,13 @@ export default {
       type: Array,
       required: true
     }
+  },
+  components: {
+    AppPseudoVideo
+  },
+  mounted () {
+        console.log(this.playlistItems)
+
   },
   computed: {
     title () {

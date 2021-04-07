@@ -1,6 +1,6 @@
 <template>
   <div id="scroll-snapper">
-    <main>
+    <main class="main">
       <section v-for="(playlist, i) in playlists" :key="playlist.id" class="section">
         <a :href="`/pl/${playlist.id}`" class="playlist-link">
           <img src="@/assets/open_full.svg" alt="open">
@@ -9,6 +9,7 @@
         <!-- <iframe :src="`/pl/${playlist.id}`" frameborder="0"></iframe> -->
       </section>
     </main>
+    <div id="video-player"></div>
   </div>
 </template>
 
@@ -55,8 +56,6 @@ export default {
     const playlistItems = isDev ? (await getAllPlayListItems($config.apiKey)(playlists.map(pl => pl.id))) : payload.allPlaylistItems
 
     const [sortedplaylistItems, sortedplaylists] = sortArrays([playlistItems, playlists], (a, b) => {
-      // ASC  -> a.length - b.length
-      // DESC -> b.length - a.length
       return b.items.length - a.items.length
     })
 
@@ -75,7 +74,16 @@ export default {
   scroll-snap-type: x mandatory;
 }
 
-body main {
+#video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
+.main {
   padding: 30px 15px;
 
   display: grid;
@@ -121,5 +129,4 @@ body main {
   right: 15px;
   z-index: 10;
 }
-
 </style>
