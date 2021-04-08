@@ -56,11 +56,13 @@ export default {
          height: 100%;
          object-fit: cover;
 
-          /* Gives a nice consisstent look but performance suffers */
-         filter: sepia(1) hue-rotate(-19deg) contrast(1.3);
+         /* Gives a nice consisstent sepia-like look but performance suffers */
+         /* filter: sepia(1) hue-rotate(-19deg) contrast(1.3); */
+         transition: filter .2s linear;
+         filter: none;
 
          &:hover {
-            filter: none;
+            filter: contrast(1.1) brightness(1.2);
          }
       }
   }
