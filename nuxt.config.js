@@ -49,6 +49,7 @@ export default {
       { property: 'og:description', content: '👀' },
       { property: 'og:image', content: 'https://i.imgur.com/MfgsvIw.png' },
       { property: 'og:url', content: 'https://lookbook.herres.haus' },
+      { name: 'twitter:card', content: 'summary_large_image' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
