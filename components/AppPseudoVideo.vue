@@ -76,6 +76,7 @@ export default {
     display: none;
   }
 
+  /* CSS button hide/show trick */
   input:checked + label + iframe { display: unset !important; }
 }
 </style>

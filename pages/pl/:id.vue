@@ -8,11 +8,6 @@ import { getPlaylist, getPlaylistItems } from '@/lib/ytapi'
 import AppPlaylistCard from '@/components/AppPlaylistCard.vue'
 
 export default {
-  data () {
-    return {
-
-    }
-  },
   components: {
     AppPlaylistCard
   },

@@ -101,11 +101,10 @@ export default {
   align-content: start; */
 
   position: relative;
-/*   X-axis scroll snap */
+
   border: solid 2px white;
   
   scroll-snap-align: center;
-
   overflow: hidden;
 
   height: calc(100% / var(--column-scale)); /*  hack, doesn't do what you think */

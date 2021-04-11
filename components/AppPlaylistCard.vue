@@ -8,8 +8,6 @@
       <article class="video" v-for="item in playlistItems" :key="item.id">
         <h1 class="video__title">{{ item.snippet.title }}</h1>
         <AppPseudoVideo :video="item" />
-        <!-- <img :src="item.snippet.thumbnails.high && item.snippet.thumbnails.high.url" alt="" class="video__player"> -->
-        <!-- <iframe class="video__player" :src="`https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
       </article>
     </main>
   </div>
@@ -32,10 +30,6 @@ export default {
   components: {
     AppPseudoVideo
   },
-  mounted () {
-        console.log(this.playlistItems)
-
-  },
   computed: {
     title () {
       return this.playlist.snippet.title
@@ -48,10 +42,6 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.playlist-card-wrapper {
-
-}
-
 .playlist-card {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -61,6 +51,16 @@ export default {
   &__header {
     border-bottom: solid 12px white;
     padding: 8rem 4rem;
+
+    h1 {
+      font-size: 2em;
+      margin: 0 0 .25em 0;
+    }
+
+    h3 {
+      margin: .1em 0;
+      line-height: 1.375;
+    }
   }
 }
 
