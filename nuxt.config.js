@@ -3,9 +3,6 @@ import { getPlaylists, getPlaylistItems, getAllPlayListItems } from './lib/ytapi
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
-  render: {
-    injectScripts: false
-  },
 
   generate: {
     async routes() {

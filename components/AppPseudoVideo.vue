@@ -1,8 +1,7 @@
 <template>
   <div class="video">
-      <input type='checkbox' style='display: none' :id="id">
-      <label :for="id" class="video__thumb"><img @click="showVideo" :src="thumbnailUrl" alt="video preview" ></label>
-      <iframe class="video__player" :src="videoURL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <img class="video__thumb" @click="showVideo" :src="thumbnailUrl" :alt="videoTitle" >
+      <iframe v-if="videoVisible" class="video__player" :src="videoURL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
 </template>
 
@@ -16,7 +15,8 @@ export default {
   },
   data () {
      return {
-        id: String(Math.random()).slice(2)
+        id: String(Math.random()).slice(2),
+        videoVisible: false
      }
   },
   computed: {
@@ -30,7 +30,15 @@ export default {
     },
     videoURL () {
        // `https://www.youtube.com/embed/${videoId}?autoplay=1`
-       return `https://www.youtube.com/embed/${this.videoId}`
+       return `https://www.youtube.com/embed/${this.videoId}?autoplay=1`
+    },
+    videoTitle () {
+      return this.video.snippet.title
+    }
+  },
+  methods: {
+    showVideo () {
+      this.videoVisible = true
     }
   }
 }
@@ -42,29 +50,26 @@ export default {
    margin: 0;
    height: min(90vh, 1080px);
 
-  &__thumb {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+   &__thumb {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 
-      cursor: pointer;
+    cursor: pointer;
 
-      img {
-         width: 100%;
-         height: 100%;
-         object-fit: cover;
+    line-height: 1.3;
+    color: #949494;
 
-         /* Gives a nice consisstent sepia-like look but performance suffers */
-         /* filter: sepia(1) hue-rotate(-19deg) contrast(1.3); */
-         transition: filter .2s linear;
-         filter: none;
+    /* Gives a nice consisstent sepia-like look but performance suffers */
+    /* filter: sepia(1) hue-rotate(-19deg) contrast(1.3); */
+    transition: filter .2s linear;
+    filter: none;
 
-         &:hover {
-            filter: contrast(1.1) brightness(1.2);
-         }
-      }
+    &:hover {
+      filter: contrast(1.1) brightness(1.2);
+    }
   }
 
   &__player {
@@ -72,11 +77,6 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-
-    display: none;
   }
-
-  /* CSS button hide/show trick */
-  input:checked + label + iframe { display: unset !important; }
 }
 </style>
