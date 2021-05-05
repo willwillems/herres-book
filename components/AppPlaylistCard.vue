@@ -6,7 +6,9 @@
     </header>
     <main class="playlist-card__content">
       <article class="video" v-for="item in playlistItems" :key="item.id">
-        <h1 class="video__title">{{ item.snippet.title }}</h1>
+        <header class="video__header">
+          <h1 class="video__title">{{ item.snippet.title }}</h1>
+        </header>
         <AppPseudoVideo :video="item" />
       </article>
     </main>
@@ -77,12 +79,15 @@ export default {
 .video {
   margin:0;
 
-  &__title {
-    font-size: 64px;
-    margin: 0;
+  &__header {
     padding: 2rem 3rem;
     background-color: white;
     color: black;
+  }
+
+  &__title {
+    font-size: 64px;
+    margin: 0;
   }
 
   &__player {

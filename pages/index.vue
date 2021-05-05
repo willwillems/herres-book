@@ -10,13 +10,16 @@
       </section>
     </main>
     <div id="video-player"></div>
+    <TheTagItems />
   </div>
 </template>
 
 <script>
 import { getPlaylists, getAllPlayListItems, channelID } from '@/lib/ytapi'
 
+
 import AppPlaylistCard from '@/components/AppPlaylistCard.vue'
+import TheTagItems from '@/components/TheTagItems.vue'
 
 /**
  *  Sorts all arrays together with the first. Pass either a list of arrays, or a map. Any key is accepted.
@@ -49,7 +52,8 @@ export default {
     }
   },
   components: {
-    AppPlaylistCard
+    AppPlaylistCard,
+    TheTagItems
   },
   async asyncData({ params, payload, isDev, $config }) {
     const playlists     = isDev ? (await getPlaylists($config.apiKey)(channelID)).items                   : payload.playlists

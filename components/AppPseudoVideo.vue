@@ -1,11 +1,16 @@
 <template>
-  <div class="video">
+  <div class="video" @dragover="handleDragover" @drop="handleDrop">
       <img class="video__thumb" @click="showVideo" :src="thumbnailUrl" :alt="videoTitle" >
       <iframe v-if="videoVisible" class="video__player" :src="videoURL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="video__tags">
+        <img v-if="hasGold" src="/img/gold.webp" alt="GOLD">
+      </div>
   </div>
 </template>
 
 <script>
+import { getVideoData, setVideoData } from "@/lib/fb"
+
 export default {
   props: {
     video: {
@@ -15,9 +20,12 @@ export default {
   },
   data () {
      return {
-        id: String(Math.random()).slice(2),
-        videoVisible: false
+        videoVisible: false,
+        tags: {}
      }
+  },
+  mounted () {
+    getVideoData(this.videoId).then((userTags) => this.tags = userTags)
   },
   computed: {
     thumbnailUrl () {
@@ -34,11 +42,29 @@ export default {
     },
     videoTitle () {
       return this.video.snippet.title
+    },
+    hasGold () {
+      return !!this.tags.gold
     }
   },
   methods: {
     showVideo () {
       this.videoVisible = true
+    },
+    handleDragover (ev) {
+      ev.preventDefault()
+    },
+    async handleDrop (ev) {
+      ev.preventDefault()
+
+      const data = ev.dataTransfer.getData("text")
+      const newTagData = {
+        ...this.tags,
+        [data]: 1
+      }
+
+      await setVideoData(this.videoId, newTagData)
+      this.tags = newTagData
     }
   }
 }
@@ -78,5 +104,29 @@ export default {
     width: 100%;
     height: 100%;
   }
+
+  &__tags {
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    width: 180px;
+
+    & > * {
+      width: 100%;
+      transform: rotate(20deg);
+
+      &:hover {
+        animation: wiggle 1s 1;
+      }
+    }
+  }
+}
+
+@keyframes wiggle {
+  0% {transform: rotate(250deg);}
+  25% {transform: rotate(15deg);}
+  50% {transform: rotate(30deg);}
+  75% {transform: rotate(15deg);}
+  100% {transform: rotate(20deg);}
 }
 </style>
