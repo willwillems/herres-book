@@ -63,6 +63,11 @@ export default {
       return b.items.length - a.items.length
     })
 
+    // sort in place by date (most recent first)
+    sortedplaylistItems.forEach(pl => pl.items.sort((a, b) => {
+      return b.snippet.publishedAt.localeCompare(a.snippet.publishedAt)
+    }))
+
     return { playlists: sortedplaylists, playlistItems: sortedplaylistItems }
   },
   mounted() {
